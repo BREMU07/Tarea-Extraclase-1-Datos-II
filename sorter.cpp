@@ -2,9 +2,7 @@
 #include <fstream>
 #include <cstring>
 #include <chrono>
-#include "pagedarray.cpp" 
-
-using namespace std;
+#include "pagedarray.cpp"  // Asegúrate de tener una implementación correcta de PagedArray
 
 void quickSort(PagedArray &arr, int left, int right) {
     int i = left, j = right;
@@ -14,7 +12,7 @@ void quickSort(PagedArray &arr, int left, int right) {
         while (arr[i] < pivot) i++;
         while (arr[j] > pivot) j--;
         if (i <= j) {
-            swap(arr[i], arr[j]);
+            std::swap(arr[i], arr[j]);
             i++;
             j--;
         }
@@ -40,7 +38,7 @@ void bubbleSort(PagedArray &arr, int size) {
     for (int i = 0; i < size - 1; ++i) {
         for (int j = 0; j < size - 1 - i; ++j) {
             if (arr[j] > arr[j + 1]) {
-                swap(arr[j], arr[j + 1]);
+                std::swap(arr[j], arr[j + 1]);
             }
         }
     }
@@ -48,33 +46,33 @@ void bubbleSort(PagedArray &arr, int size) {
 
 int main(int argc, char *argv[]) {
     if (argc != 7) {
-        cerr << "Uso: sorter -input <RUTA DEL ARCHIV INPUT> -output <RUTA DEL ARCHIVO OUTPUT> -alg <ALGORITMO>\n";
+        std::cerr << "Usage: sorter -input <INPUT FILE PATH> -output <OUTPUT FILE PATH> -alg <ALGORITHM>\n";
         return 1;
     }
 
-    string inputPath = argv[2];
-    string outputPath = argv[4];
-    string algorithm = argv[6];
+    std::string inputPath = argv[2];
+    std::string outputPath = argv[4];
+    std::string algorithm = argv[6];
 
-    ifstream inFile(inputPath, ios::binary);
+    std::ifstream inFile(inputPath, std::ios::binary);
     if (!inFile) {
-        cerr << "ERROR AL ABRIR input file.\n";
+        std::cerr << "Error opening input file.\n";
         return 1;
     }
 
-    inFile.seekg(0, ios::end);
+    inFile.seekg(0, std::ios::end);
     size_t fileSize = inFile.tellg();
     size_t numIntegers = fileSize / sizeof(int);
 
-    inFile.seekg(0, ios::beg);
-    ofstream tempFile("temp.bin", ios::binary);
+    inFile.seekg(0, std::ios::beg);
+    std::ofstream tempFile("temp.bin", std::ios::binary);
     tempFile << inFile.rdbuf();
     inFile.close();
     tempFile.close();
 
     PagedArray arr("temp.bin");
 
-    auto start = chrono::high_resolution_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
 
     if (algorithm == "QS") {
         quickSort(arr, 0, numIntegers - 1);
@@ -83,31 +81,34 @@ int main(int argc, char *argv[]) {
     } else if (algorithm == "BS") {
         bubbleSort(arr, numIntegers);
     } else {
-        cerr << "ALGORITMO INVALIDO. Usar QS, IS, or BS.\n";
+        std::cerr << "Invalid algorithm. Use QS, IS, or BS.\n";
         return 1;
     }
 
-    auto end = chrono::high_resolution_clock::now();
-    chrono::duration<double> elapsed = end - start;
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
 
-    ofstream outFile(outputPath);
+    std::ofstream outFile(outputPath);
     if (!outFile) {
-        cerr << "Error opening output file.\n";
+        std::cerr << "Error opening output file.\n";
         return 1;
     }
 
     for (size_t i = 0; i < numIntegers; ++i) {
-        outFile << arr[i] << "\n";
+        outFile << arr[i];
+        if (i < numIntegers - 1) {
+            outFile << ",";  // Agrega una coma después de cada número excepto el último
+        }
     }
 
     outFile.close();
-    remove("temp.bin");
+    std::remove("temp.bin");
 
-    cout << "Finalizado.\n";
-    cout << "Tiempo de ejecucion: " << elapsed.count() << " seconds\n";
-    cout << "Algoritmo usado: " << algorithm << "\n";
-    cout << "Page faults: " << arr.getPageFaults() << "\n";
-    cout << "Page hits: " << arr.getPageHits() << "\n";
+    std::cout << "Sorting completed.\n";
+    std::cout << "Time taken: " << elapsed.count() << " seconds\n";
+    std::cout << "Algorithm used: " << algorithm << "\n";
+    std::cout << "Page faults: " << arr.getPageFaults() << "\n";
+    std::cout << "Page hits: " << arr.getPageHits() << "\n";
 
     return 0;
 }

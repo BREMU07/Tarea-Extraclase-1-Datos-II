@@ -31,11 +31,13 @@ int main(int argc, char *argv[]) {
     string filePath = argv[4];
 
     if (sizeArg == "SMALL") {
-        sizeInMB = 10;
+        sizeInMB = 512;
     } else if (sizeArg == "MEDIUM") {
         sizeInMB = 1024;
     } else if (sizeArg == "LARGE") {
-        sizeInMB = 2048;
+        sizeInMB = 2048;       
+    } else if (sizeArg == "CUSTOM") {
+        sizeInMB = 1;
     } else {
         cerr << "Invalid size argument. Use SMALL, MEDIUM, or LARGE.\n";
         return 1;
