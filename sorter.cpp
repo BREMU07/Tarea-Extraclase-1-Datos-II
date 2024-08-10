@@ -46,7 +46,7 @@ void bubbleSort(PagedArray &arr, int size) {
 
 int main(int argc, char *argv[]) {
     if (argc != 7) {
-        std::cerr << "Usage: sorter -input <INPUT FILE PATH> -output <OUTPUT FILE PATH> -alg <ALGORITHM>\n";
+        std::cerr << "Modo de uso: sorter -input <RUTA DEl ARCHIVO DE ENTRADA> -output <RUTA DEL ARCHIVO DE SALIDA> -alg <ALGORITMO>\n";
         return 1;
     }
 
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 
     std::ifstream inFile(inputPath, std::ios::binary);
     if (!inFile) {
-        std::cerr << "Error opening input file.\n";
+        std::cerr << "Error abriendo el archivo de entrada.\n";
         return 1;
     }
 
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
     } else if (algorithm == "BS") {
         bubbleSort(arr, numIntegers);
     } else {
-        std::cerr << "Invalid algorithm. Use QS, IS, or BS.\n";
+        std::cerr << "Algoritmo invalido. Utilice QS, IS, o BS.\n";
         return 1;
     }
 
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 
     std::ofstream outFile(outputPath);
     if (!outFile) {
-        std::cerr << "Error opening output file.\n";
+        std::cerr << "Error al abrir el archivo de salida.\n";
         return 1;
     }
 
@@ -104,9 +104,9 @@ int main(int argc, char *argv[]) {
     outFile.close();
     std::remove("temp.bin");
 
-    std::cout << "Sorting completed.\n";
-    std::cout << "Time taken: " << elapsed.count() << " seconds\n";
-    std::cout << "Algorithm used: " << algorithm << "\n";
+    std::cout << "Ejecucion terminada.\n";
+    std::cout << "Tiempo de ejecucion: " << elapsed.count() << " seconds\n";
+    std::cout << "Algoritmo utilizado: " << algorithm << "\n";
     std::cout << "Page faults: " << arr.getPageFaults() << "\n";
     std::cout << "Page hits: " << arr.getPageHits() << "\n";
 

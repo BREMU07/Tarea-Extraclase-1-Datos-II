@@ -22,7 +22,7 @@ void generateFile(const string &filePath, size_t sizeInMB) {
 
 int main(int argc, char *argv[]) {
     if (argc != 5) {
-        cerr << "Usage: generator -size <SIZE> -output <OUTPUT FILE PATH>\n";
+        cerr << "Modo de uso: generator -size <TAMAÑO> -output <RUTA DEL ARCHIVO DE SALIDA>\n";
         return 1;
     }
 
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
     } else if (sizeArg == "CUSTOM") {
         sizeInMB = 1;
     } else {
-        cerr << "Invalid size argument. Use SMALL, MEDIUM, or LARGE.\n";
+        cerr << "Argumento de tamaño invalido. Utilice SMALL, MEDIUM, or LARGE.\n";
         return 1;
     }
 
